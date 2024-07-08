@@ -23,6 +23,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# ssssssssssssssssssssss
+
 model = tf.keras.models.load_model('toxicity.keras')
 vectorizer = tf.keras.layers.TextVectorization(max_tokens=200000, output_sequence_length=1800)
 vectorizer.adapt([""])
