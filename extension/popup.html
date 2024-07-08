@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Toxicity Checker</title>
+  <style>
+    body {
+      width: 300px;
+      padding: 10px;
+      font-family: Arial, sans-serif;
+    }
+    textarea {
+      width: 100%;
+      height: 100px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Toxicity Checker</h1>
+  <textarea id="toxicity-text" placeholder="Enter text here..."></textarea>
+  <button id="check-toxicity">Check Toxicity</button>
+  <div id="toxicity-result" style="margin-top: 10px;"></div>
+
+  <script>
+    document.getElementById('check-toxicity').addEventListener('click', function() {
+      const text = document.getElementById('toxicity-text').value;
+      fetch('http://127.0.0.1:7860/api/predict', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ data: [text] })
+      })
+      .then(response => response.json())
+      .then(data => {
+        const result = data.predictions[0];
+        document.getElementById('toxicity-result').innerText = 'Toxicity levels:\n' + JSON.stringify(result, null, 2);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('toxicity-result').innerText = 'Error: ' + error.message;
+      });
+    });
+  </script>
+</body>
+</html>
